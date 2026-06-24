@@ -1,0 +1,16 @@
+name: Pylint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up Python
+      uses: actions/setup-python@v6
+    - name: Install dependencies
+      run: pip install pylint
+    - name: Analyzing the code with pylint
+      run: pylint $(git ls-files '*.py')
