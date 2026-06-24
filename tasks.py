@@ -17,16 +17,24 @@ def save_tasks(tasks):
         json.dump(tasks, f, indent=2)
 
 
-def add_task(description):
+PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+VALID_PRIORITIES = set(PRIORITY_ORDER)
+
+
+def add_task(description, priority="medium"):
+    if priority not in VALID_PRIORITIES:
+        print(f"Invalid priority '{priority}'. Choose from: low, medium, high")
+        return
     tasks = load_tasks()
     task = {
         "id": len(tasks) + 1,
         "description": description,
         "done": False,
+        "priority": priority,
     }
     tasks.append(task)
     save_tasks(tasks)
-    print(f"Added task #{task['id']}: {description}")
+    print(f"Added task #{task['id']}: {description} [{priority}]")
 
 
 def list_tasks():
@@ -34,11 +42,13 @@ def list_tasks():
     if not tasks:
         print("No tasks yet. Add one with: python tasks.py add \"your task\"")
         return
-    print(f"{'ID':<4} {'Status':<10} Description")
-    print("-" * 40)
-    for task in tasks:
+    sorted_tasks = sorted(tasks, key=lambda t: PRIORITY_ORDER.get(t.get("priority", "medium"), 1))
+    print(f"{'ID':<4} {'Status':<10} {'Priority':<10} Description")
+    print("-" * 52)
+    for task in sorted_tasks:
         status = "[done]" if task["done"] else "[ ]"
-        print(f"{task['id']:<4} {status:<10} {task['description']}")
+        priority = task.get("priority", "medium")
+        print(f"{task['id']:<4} {status:<10} {priority:<10} {task['description']}")
 
 
 def complete_task(task_id):
@@ -64,10 +74,10 @@ def delete_task(task_id):
 
 def print_usage():
     print("Usage:")
-    print("  python tasks.py add \"task description\"  - Add a new task")
-    print("  python tasks.py list                    - List all tasks")
-    print("  python tasks.py done <id>               - Mark a task complete")
-    print("  python tasks.py delete <id>             - Delete a task")
+    print("  python tasks.py add \"task description\" [--priority low|medium|high]  - Add a new task")
+    print("  python tasks.py list                                                  - List all tasks")
+    print("  python tasks.py done <id>                                             - Mark a task complete")
+    print("  python tasks.py delete <id>                                           - Delete a task")
 
 
 def main():
@@ -82,7 +92,13 @@ def main():
             print("Please provide a task description.")
             print("  Example: python tasks.py add \"Buy groceries\"")
         else:
-            add_task(sys.argv[2])
+            priority = "medium"
+            args = sys.argv[3:]
+            if "--priority" in args:
+                idx = args.index("--priority")
+                if idx + 1 < len(args):
+                    priority = args[idx + 1]
+            add_task(sys.argv[2], priority)
 
     elif command == "list":
         list_tasks()

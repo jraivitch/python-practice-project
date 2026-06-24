@@ -4,8 +4,8 @@ A beginner-friendly command-line task tracker built with Python. Use this projec
 
 ## What it does
 
-- Add tasks
-- List all tasks with their status
+- Add tasks with optional priority (`low`, `medium`, `high`)
+- List all tasks sorted by priority (high first)
 - Mark tasks as complete
 - Delete tasks
 - Saves tasks to a `tasks.json` file so they persist between runs
@@ -19,10 +19,14 @@ A beginner-friendly command-line task tracker built with Python. Use this projec
 Open a terminal in this project folder, then use any of these commands:
 
 ```bash
-# Add a task
+# Add a task (default priority: medium)
 python tasks.py add "Buy groceries"
 
-# List all tasks
+# Add a task with a priority
+python tasks.py add "Fix production bug" --priority high
+python tasks.py add "Read docs" --priority low
+
+# List all tasks (sorted by priority)
 python tasks.py list
 
 # Mark task #1 as done
@@ -36,28 +40,33 @@ python tasks.py delete 1
 
 ```
 $ python tasks.py add "Buy groceries"
-Added task #1: Buy groceries
+Added task #1: Buy groceries [medium]
 
-$ python tasks.py add "Walk the dog"
-Added task #2: Walk the dog
+$ python tasks.py add "Fix production bug" --priority high
+Added task #2: Fix production bug [high]
 
-$ python tasks.py list
-ID   Status     Description
-----------------------------------------
-1    [ ]        Buy groceries
-2    [ ]        Walk the dog
-
-$ python tasks.py done 1
-Marked task #1 as done.
+$ python tasks.py add "Read docs" --priority low
+Added task #3: Read docs [low]
 
 $ python tasks.py list
-ID   Status     Description
-----------------------------------------
-1    [done]     Buy groceries
-2    [ ]        Walk the dog
+ID   Status     Priority   Description
+----------------------------------------------------
+2    [ ]        high       Fix production bug
+1    [ ]        medium     Buy groceries
+3    [ ]        low        Read docs
 
-$ python tasks.py delete 2
-Deleted task #2.
+$ python tasks.py done 2
+Marked task #2 as done.
+
+$ python tasks.py list
+ID   Status     Priority   Description
+----------------------------------------------------
+2    [done]     high       Fix production bug
+1    [ ]        medium     Buy groceries
+3    [ ]        low        Read docs
+
+$ python tasks.py delete 3
+Deleted task #3.
 ```
 
 ## File overview
