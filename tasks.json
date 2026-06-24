@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "description": "Learn git",
+    "done": false,
+    "priority": "medium"
+  },
+  {
+    "id": 2,
+    "description": "Learn gihub",
+    "done": false,
+    "priority": "medium"
+  },
+  {
+    "id": 3,
+    "description": "Learn everything",
+    "done": false,
+    "priority": "medium"
+  },
+  {
+    "id": 4,
+    "description": "Testing ability",
+    "done": false,
+    "priority": "high"
+  },
+  {
+    "id": 5,
+    "description": "Write report",
+    "done": false,
+    "priority": "medium",
+    "due_date": "2026-06-26"
+  }
+]
